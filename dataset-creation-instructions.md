@@ -6,3 +6,7 @@
 - Pretrain the DAMSM with python pretrain_DAMSM.py. Model is stored in output
 - Train the AttnGAN with python main.py. 
 Move text and image encoders from output/^date^/Model to DAMSMencoders/^dataset^/
+- Generate descriptions
+Move attn model to /models
+Add example captions to example_captions.txt
+Find generated captions in models/
