@@ -1,0 +1,2 @@
+#resize
+#crop to centre
