@@ -34,7 +34,7 @@ if __name__ == '__main__':
 
         # print(paths_list[0:100])
 
-        out_file = "../dilbert_annotations_2.json"
+        out_file = "data/dilbert/dilbert_annotations_2.json"
 
         manually_extract_text(paths_list[0:300], out_file)
     print("input paths and stuff")
