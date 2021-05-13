@@ -23,7 +23,7 @@ def resize(in_folder, file_list, size, out_folder):
             image = Image.open(path)
             width, height = image.size
 
-            if (width - height) < (0.5 * width):
+            if (width - height) < (0.1 * width):
                 # image is square
 
                 resized = image.resize((size, size))
@@ -46,6 +46,7 @@ if __name__ == "__main__":
 
         print("resizing")
 
-        resize(in_folder, to_resize, 256, out_folder)
+        new_size = 256
+        resize(in_folder, to_resize, new_size, out_folder)
 
 

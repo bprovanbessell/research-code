@@ -10,3 +10,11 @@ Move text and image encoders from output/^date^/Model to DAMSMencoders/^dataset^
 Move attn model to /models
 Add example captions to example_captions.txt
 Find generated captions in models/
+
+Download models
+gcloud compute scp --project gan-g-shit --zone us-west1-b --recurse deeplearning-2-vm:~/new-gan-stuff/AttnGAN/models/dilbert-2_attn.pth
+gcloud compute scp --project gan-g-shit --zone us-west1-b --recurse deeplearning-2-vm:~/new-gan-stuff/AttnGAN/DAMSMencoders/dilbert-2/text_encoder150.pth attnGAN_gen
+
+upload exampletxt 
+
+gcloud compute scp --project gan-g-shit --zone us-west1-b --recurse example_captions2.txt deeplearning-2-vm:~/new-gan-stuff/AttnGAN/data/dilbert-attn-2
