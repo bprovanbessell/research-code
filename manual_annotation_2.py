@@ -15,6 +15,12 @@ def manually_annotate_character_colour(paths, out_file_path):
               "2: Dogbert\n"
               "3: Boss")
 
+        #         secretary
+        # boss's wife
+        # ratbert
+        # office worker
+        # elbonian
+
         # what to do about non-recurring characters?
         # building as character
         print("Availble background colours:\n"
@@ -25,6 +31,7 @@ def manually_annotate_character_colour(paths, out_file_path):
               "pink: pi\n"
               "white:")
         # brown??
+        # split colours
 
         char_and_colour = input(f"{i + 1}/{len(paths)}: character character etc., background_colour: ")
 
