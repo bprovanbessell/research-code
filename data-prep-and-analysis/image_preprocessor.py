@@ -45,7 +45,7 @@ def move_to(fns, inf, outf):
 
 
 if __name__ == "__main__":
-    with open("data/dilbert/dilbert/splitted_paths.json") as paths_file:
+    with open("../data/dilbert/dilbert/splitted_paths.json") as paths_file:
         paths_list = json.load(paths_file)
 
         paths_list = sorted(paths_list)

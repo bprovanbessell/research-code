@@ -85,12 +85,12 @@ def make_until_2048(im_folder):
 
 if __name__ == "__main__":
     annotations_js = "data/dilbert/dilbert_annotations_3.json"
-    txt_path = "data/dilbert/dil3_gen/test_captions/"
+    txt_path = "../data/dilbert/dil3_gen/test_captions/"
 
-    gen_path = "data/dilbert/dil3_gen/fidtest/gen3_200/"
-    out_gen_path = "data/dilbert/dil3_gen/fidtest/test_gen/final_gen3_200/"
+    gen_path = "../data/dilbert/dil3_gen/fidtest/gen3_200/"
+    out_gen_path = "../data/dilbert/dil3_gen/fidtest/test_gen/final_gen3_200/"
 
-    images_path = "data/dilbert/dil3_gen/fidtest/images/001.dilbert_3/"
+    images_path = "../data/dilbert/dil3_gen/fidtest/images/001.dilbert_3/"
 
     # make_test_captions(annotations_js, txt_path)
 

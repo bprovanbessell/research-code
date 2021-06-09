@@ -15,8 +15,13 @@ def filter_on_conditions(labels_json, out_json):
             chars = labels["Characters"]
             colour = labels["Colour"].replace(" ", "")
 
+            if "" in chars:
+                chars.remove("")
+
             # conditions
-            conditions = ["9" in chars, "4" in chars, "blah" in chars, "-1" in chars, len(chars) > 3, "" in chars, colour == ""]
+            # conditions = ["9" in chars, "4" in chars, "blah" in chars, "-1" in chars, len(chars) > 3, "" in chars, colour == "", len(chars) == 0]
+
+            conditions = ["9" not in chars, colour == ""]
 
             if not(any(conditions)):
                 result[fn] = labels
@@ -122,19 +127,43 @@ def shuffle_chars_and_colour(characters, colour):
 
     return descriptions
 
+def count_colours(labels_json):
+    with open(labels_json) as labels_file:
+        labels_dict = json.load(labels_file)
+
+        print(len(labels_dict))
+
+        colours_dict = {"b": 0,
+                        "g": 0,
+                        "y": 0,
+                        "p": 0,
+                        "pi": 0,
+                        "w": 0}
+
+        for fn in labels_dict.keys():
+            labels = labels_dict[fn]
+
+            chars = labels["Characters"]
+            colour = labels["Colour"].replace(" ", "")
+
+            colours_dict[colour] = colours_dict[colour] + 1
+
+
+        print(len(labels_dict))
+        print(colours_dict)
+
 
 if __name__ == "__main__":
-    labels_json = "data/dilbert/resized_char_and_colour_0:1500.json"
+    labels_json = "data/dilbert/annotated-jsons/resized_char_and_colour_0:2000.json"
 
-    labels_filtered = "data/dilbert/resized_char_and_colour_0:1500_filtered.json"
+    labels_filtered = "data/dilbert/annotated-jsons/resized_char_and_colour_0:2000_9s.json"
 
     out_json = "data/dilbert/dilbert_annotations_3.json"
 
     filter_on_conditions(labels_json, labels_filtered)
-    convert_labels_to_annote(labels_filtered, out_json)
+    # convert_labels_to_annote(labels_filtered, out_json)
 
-    l = [1,2,3]
-
+    count_colours(labels_filtered)
     # for c in permutations(l):
     #     for ch in c:
     #         print(ch)

@@ -1,6 +1,6 @@
 import json
 import glob
-from shutil import move
+from shutil import move, copy
 import pickle
 import random
 
@@ -146,7 +146,7 @@ def remove_missing(missing_json, images_folder):
 def make_train_test_pickles(images_list, image_folder, out_folder):
 
     length = len(images_list)
-    tr_length = round(length * .95)
+    tr_length = round(length * .75)
 
     file_paths = [fn.replace(image_folder, "001.dilbert_transcribed/").replace(".png", "") for fn in images_list]
 
@@ -177,14 +177,17 @@ def make_train_test_pickles(images_list, image_folder, out_folder):
     pickle.dump(classi_test, open(out_folder + "test/class_info.pickle", "wb"))
 
 
-def make_examples(transcriptions_list, transcriptions_folder, out_folder):
+def make_examples(transcriptions_list, transcriptions_folder, out_folder, out_folder_old):
 
     # gen 2048
-    fn_object = open(out_folder + "example_filenames", "w+")
-    file_names = random.sample(transcriptions_list, 2048)
+    fn_object = open(out_folder.replace("gen_captions/", "") + "example_filenames", "w+")
+    file_names = transcriptions_list[0:2050]
 
     for fn in file_names:
-        fn = fn.replace(out_folder, "").replace(".txt", "")
+        copy_to = fn.replace(transcriptions_folder, out_folder)
+        copy(fn, copy_to)
+
+        fn = fn.replace(out_folder_old, "gen_captions/").replace(".txt", "")
 
         fn_object.write(fn)
         fn_object.write("\n")
@@ -199,14 +202,36 @@ def save_losses(g_losses, d_losses, epoch):
         json.dump(res, js_file)
 
 
+def copy_images_transcriptions(image_folder, image_paths, transcriptions_folder, transcriptions_paths, copy_to_im, copy_to_txt):
+
+    new_im_path = image_paths[0].replace(image_folder, copy_to_im)
+    new_tr_path = transcriptions_paths[0].replace(transcriptions_folder, copy_to_txt)
+
+    if not os.path.exists(new_im_path):
+        os.makedirs(new_im_path)
+        os.makedirs(new_tr_path)
+
+    for im_path in image_paths:
+        new_im_path = im_path.replace(image_folder, copy_to_im)
+        move(im_path, new_im_path)
+
+    for tr_path in transcriptions_paths:
+        new_tr_path = tr_path.replace(transcriptions_folder, copy_to_txt)
+        move(tr_path, new_tr_path)
+
+
 if __name__ == "__main__":
-    transcriptions_path = "data/dilbert/transcriptions.txt"
+    transcriptions_path = "../data/dilbert/transcriptions.txt"
     out_json = "data/dilbert/transcriptions.json"
 
     # parse_to_json(transcriptions_path, out_json)
-    image_folder = "data/dilbert/dilbert_transcribed/images/001.dilbert_transcribed/"
-    image_paths = sorted(glob.glob("data/dilbert/dilbert_transcribed/images/001.dilbert_transcribed/*"))
+    image_folder = "data/dilbert/dilbert_transcribed_10k/images/001.dilbert_transcribed/"
+    image_paths = sorted(glob.glob("data/dilbert/dilbert_transcribed_10k/images/001.dilbert_transcribed/*"))
     out_folder = "data/dilbert/dilbert_transcribed/"
+
+    train_paths_im = image_paths[0:3000]
+
+    test_paths = image_paths[3000:5200]
 
     # json_to_txt_from_images(out_json, image_paths, out_folder, image_folder)
 
@@ -214,18 +239,30 @@ if __name__ == "__main__":
 
     # remove_missing("missing.json", image_folder)
 
-    make_train_test_pickles(image_paths, image_folder, out_folder)
 
-    transcriptions_list = sorted(glob.glob("data/dilbert/dilbert_transcribed/text/001.dilbert_transcribed/*"))
+    transcriptions_folder = "data/dilbert/dilbert_transcribed_10k/text/001.dilbert_transcribed/"
+    transcriptions_list = sorted(glob.glob("data/dilbert/dilbert_transcribed_10k/text/001.dilbert_transcribed/*"))
 
-    transcriptions_list2 = glob.glob("data/dilbert/dilbert_transcribed/text/001.dilbert_transcribed/*")
+    train_paths_txt = transcriptions_list[0:3000]
 
-    print(len(transcriptions_list))
-    print(len(transcriptions_list2))
+    gen_trans = transcriptions_list[-2100:]
 
     print(len(image_paths))
 
+    out_folder_txt = out_folder + "text/001.dilbert_transcribed/"
+    out_folder_im = out_folder + "images/001.dilbert_transcribed/"
 
+    image_folder_3k = "data/dilbert/dilbert_transcribed/images/001.dilbert_transcribed/"
+    image_paths_3k = sorted(glob.glob("data/dilbert/dilbert_transcribed/images/001.dilbert_transcribed/*"))
+
+    # make_train_test_pickles(image_paths_3k, image_folder_3k, out_folder)
+
+    out_folder_gen_captions = out_folder + "gen_captions/"
+    out_folder_old = "data/dilbert/dilbert_transcribed_10k/text/001.dilbert_transcribed/"
+
+    print(len(gen_trans))
+
+    # copy_images_transcriptions(image_folder, train_paths_im, transcriptions_folder, train_paths_txt, out_folder_im, out_folder_txt)
 
     # transcriptions_folder = "data/dilbert/dilbert_transcribed/text/001.dilbert_transcribed/"
-    # make_examples(transcriptions_list, transcriptions_folder, out_folder)
+    make_examples(gen_trans, transcriptions_folder, out_folder_gen_captions, out_folder_old)

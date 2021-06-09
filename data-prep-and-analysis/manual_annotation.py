@@ -27,14 +27,14 @@ def manually_extract_text(img_paths, out_file_path):
 
 if __name__ == '__main__':
 
-    with open("../data/dilbert/splitted_paths.json") as paths_file:
+    with open("../../data/dilbert/splitted_paths.json") as paths_file:
         paths_list = json.load(paths_file)
 
         paths_list = sorted(paths_list)
 
         # print(paths_list[0:100])
 
-        out_file = "data/dilbert/dilbert_annotations_2.json"
+        out_file = "../data/dilbert/dilbert_annotations_2.json"
 
         manually_extract_text(paths_list[0:300], out_file)
     print("input paths and stuff")
