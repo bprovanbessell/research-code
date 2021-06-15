@@ -29,8 +29,8 @@ model_name = "inception"
 # total number of possible classes in the dilbert set:
 
 # Characters = Dilbert, Dogbert, Boss, Wolly, Alice, Catbert, Alice, Carol(Secretary), Tina, Ted (office guy) = 10, building
-# colours = blue, green, purple, yellow, pink, white = 5
-num_classes = 17
+# colours = blue, green, purple, yellow, pink, white = 6
+num_classes = 6
 
 # Batch size for training (change depending on how much memory you have)
 batch_size = 16
@@ -89,40 +89,41 @@ def train_model(model, dataloaders, criterion, optimizer, num_epochs=25, is_ince
                     if is_inception and phase == 'train':
                         # From https://discuss.pytorch.org/t/how-to-optimize-inception-model-with-auxiliary-classifiers/7958
                         outputs, aux_outputs = model(inputs)
-                        loss1 = criterion(outputs, labels.type(torch.float))
-                        loss2 = criterion(aux_outputs, labels.type(torch.float))
+
+                        print("out: ", outputs[0])
+                        print("labels: ", labels[0])
+                        loss1 = criterion(outputs, torch.max(labels, 1)[1])
+                        loss2 = criterion(aux_outputs, torch.max(labels, 1)[1])
                         loss = loss1 + 0.4*loss2
                     else:
                         outputs = model(inputs)
-                        loss = criterion(outputs, labels.type(torch.float))
+                        loss = criterion(outputs, torch.max(labels, 1)[1])
 
-                    # _, preds = torch.max(outputs, 1)
+                    _, preds = torch.max(outputs, 1)
                     threshold = 0.5
-                    preds = np.array(outputs > threshold, dtype=float)
+                    # preds = np.array(outputs > threshold, dtype=float)
 
                     # backward + optimize only if in training phase
                     if phase == 'train':
                         loss.backward()
                         optimizer.step()
 
-                acc = accuracy_score(y_pred=preds, y_true=np_labels)
-                print(preds[0])
-                print(np_labels[0])
-                print("accuracy: ", acc)
-                f1 = f1_score(y_pred=preds, y_true=np_labels, average="samples")
-                print("f1:", f1)
-                precision = precision_score(y_pred=preds, y_true=np_labels, average="samples")
-                print("precision:", precision)
+                # acc = accuracy_score(y_pred=preds, y_true=np_labels)
+                # print(preds[0])
+                # print(np_labels[0])
+                # print("accuracy: ", acc)
+                # f1 = f1_score(y_pred=preds, y_true=np_labels, average="samples")
+                # print("f1:", f1)
+                # precision = precision_score(y_pred=preds, y_true=np_labels, average="samples")
+                # print("precision:", precision)
 
 
-                preds = torch.from_numpy(np.asarray(preds)).type(torch.float)
+                # preds = torch.from_numpy(np.asarray(preds)).type(torch.float)
                 # statistics
                 running_loss += loss.item() * inputs.size(0)
-                running_corrects += torch.sum(preds == labels)
+                running_corrects += torch.sum(preds == torch.max(labels, 1)[1])
 
                 print(running_corrects)
-
-
 
             epoch_loss = running_loss / len(dataloaders[phase].dataset)
             epoch_acc = running_corrects.double() / len(dataloaders[phase].dataset)
@@ -204,20 +205,21 @@ def initialize_model(model_name, num_classes, feature_extract, use_pretrained=Tr
         model_ft.classifier = nn.Linear(num_ftrs, num_classes)
         input_size = 224
 
+
     elif model_name == "inception":
+
         """ Inception v3
         Be careful, expects (299,299) sized images and has auxiliary output
         """
+
         model_ft = models.inception_v3(pretrained=use_pretrained)
         set_parameter_requires_grad(model_ft, feature_extract)
         # Handle the auxilary net
         num_ftrs = model_ft.AuxLogits.fc.in_features
-        model_ft.AuxLogits.fc = nn.Sequential(
-            nn.Linear(num_ftrs, num_classes),
-            nn.Sigmoid())
+        model_ft.AuxLogits.fc = nn.Linear(num_ftrs, num_classes)
         # Handle the primary net
         num_ftrs = model_ft.fc.in_features
-        model_ft.fc = nn.Sequential(nn.Linear(num_ftrs,num_classes), nn.Sigmoid())
+        model_ft.fc = nn.Linear(num_ftrs, num_classes)
         input_size = 299
 
     else:
@@ -422,8 +424,8 @@ class LabelsDataset(Dataset):
 if __name__ == "__main__":
 
     img_dir = "../data/dilbert/resized_256_07-11"
-    train_json = "../data/dilbert/annotated-jsons/train_labels.json"
-    test_json = "../data/dilbert/annotated-jsons/test_labels.json"
+    train_json = "../data/dilbert/annotated-jsons/train_colour_labels.json"
+    test_json = "../data/dilbert/annotated-jsons/test_colour_labels.json"
 
     imsize = 299
     image_transform = transforms.Compose([
@@ -468,8 +470,8 @@ if __name__ == "__main__":
     optimizer_ft = optim.SGD(params_to_update, lr=0.001, momentum=0.9)
 
 
-    # criterion = nn.CrossEntropyLoss()
-    criterion = nn.BCELoss()
+    criterion = nn.CrossEntropyLoss()
+    # criterion = nn.BCELoss()
 
 
     # Train and evaluate

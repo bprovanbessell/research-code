@@ -73,5 +73,5 @@ if __name__ == "__main__":
         # new_size = 64
         # resize(in_folder, to_resize, new_size, out_folder)
 
-        print(to_move[0:10])
-        move_to(to_move, out_folder, new_out)
+        # print(to_move[0:10])
+        # move_to(to_move, out_folder, new_out)

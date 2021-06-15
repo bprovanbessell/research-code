@@ -81,7 +81,7 @@ def manually_annotate_character_colour(paths, out_file_path):
 if __name__ == "__main__":
     imgs_path = "data/dilbert/resized_256_07-11/*"
 
-    out_file = "data/dilbert/resized_char_and_colour_299:2000_9_res.json"
+    out_file = "data/dilbert/resized_char_and_colour_2500_92s_res.json"
 
     paths = glob.glob(imgs_path)
 
@@ -89,13 +89,13 @@ if __name__ == "__main__":
 
     selected = paths[2750:3000]
 
-    print(selected[0])
+    print(selected)
 
     # manually_annotate_character_colour(selected, out_file)
 
-    with open("../data/dilbert/annotated-jsons/resized_char_and_colour_0:2000_9s.json") as jsfile:
+    with open("data/dilbert/annotated-jsons/resized_char_and_colour_2500_9s.json") as jsfile:
         d = json.load(jsfile)
 
         file_paths = ["data/dilbert/resized_256_07-11/" + k for k in d.keys()]
 
-        manually_annotate_character_colour(file_paths[299 :], out_file)
+        manually_annotate_character_colour(file_paths[76:], out_file)

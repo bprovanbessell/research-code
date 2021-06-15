@@ -68,7 +68,7 @@ def make_pickles(out_folder, annotations_json, mirror=False):
         for image_name in annotations_dict.keys():
             annotation = annotations_dict[image_name]
 
-            image_path = "001.dilbert_3/" + image_name
+            image_path = "001.dilbert_equal/" + image_name
             dst = image_path.replace(".png", "")
             file_paths.append(dst)
 
@@ -113,15 +113,24 @@ def make_pickles(out_folder, annotations_json, mirror=False):
 
 
 if __name__ == "__main__":
-    out_folder_t = "data/dilbert/dilbert-attn-3/text/001.dilbert_3/"
-    annotations_js = "data/dilbert/dilbert_annotations_3.json"
+    # out_folder_t = "data/dilbert/dilbert-attn-3/text/001.dilbert_3/"
+    # annotations_js = "data/dilbert/dilbert_annotations_3.json"
+    #
+    # out_folder_i = "data/dilbert/dilbert-attn-3/images/001.dilbert_3/"
+    #
+    # out_folder_p = "data/dilbert/dilbert-attn-3/"
+    #
+    # images_folder = "data/dilbert/dilbert/cleared/"
 
-    out_folder_i = "data/dilbert/dilbert-attn-3/images/001.dilbert_3/"
+    out_folder_t = "../data/dilbert/dilbert_equal/text/001.dilbert_equals/"
+    annotations_js = "../data/dilbert/annotated-jsons/dilbert_annotations_equal.json"
 
-    out_folder_p = "data/dilbert/dilbert-attn-3/"
+    out_folder_i = "../data/dilbert/dilbert_equal/images/001.dilbert_equal/"
 
-    images_folder = "data/dilbert/dilbert/cleared/"
+    out_folder_p = "../data/dilbert/dilbert_equal/"
+
+    # images_folder = "../data/dilbert/dilbert/cleared/"
 
     # mirror_images(out_folder_i, annotations_js, images_folder, True)
-    # make_file_for_annotations(out_folder_t, annotations_js, True)
-    # make_pickles(out_folder_p, annotations_js, True)
+    # make_file_for_annotations(out_folder_t, annotations_js, mirror=False)
+    make_pickles(out_folder_p, annotations_js, mirror=False)

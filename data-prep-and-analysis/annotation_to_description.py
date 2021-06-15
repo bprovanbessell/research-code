@@ -7,21 +7,28 @@ def filter_on_conditions(labels_json, out_json):
     with open(labels_json) as labels_file:
         labels_dict = json.load(labels_file)
 
+        print(len(labels_dict))
+
         result = {}
 
         for fn in labels_dict.keys():
             labels = labels_dict[fn]
 
             chars = labels["Characters"]
+            labels["Colour"] = labels["Colour"].replace(" ", "")
             colour = labels["Colour"].replace(" ", "")
 
             if "" in chars:
                 chars.remove("")
 
             # conditions
-            # conditions = ["9" in chars, "4" in chars, "blah" in chars, "-1" in chars, len(chars) > 3, "" in chars, colour == "", len(chars) == 0]
+            conditions = ["9" in chars, "4" in chars, "blah" in chars, "-1" in chars, len(chars) > 3, "" in chars,
+                          colour == "", len(chars) == 0, "b03" == colour,
+                          "10" in chars, "11" in chars, "12" in chars,
+                          colour == "w"
+                          ]
 
-            conditions = ["9" not in chars, colour == ""]
+            # conditions = ["9" not in chars, colour == ""]
 
             if not(any(conditions)):
                 result[fn] = labels
@@ -131,7 +138,8 @@ def count_colours(labels_json):
     with open(labels_json) as labels_file:
         labels_dict = json.load(labels_file)
 
-        print(len(labels_dict))
+        length = len(labels_dict)
+        print(length)
 
         colours_dict = {"b": 0,
                         "g": 0,
@@ -139,6 +147,20 @@ def count_colours(labels_json):
                         "p": 0,
                         "pi": 0,
                         "w": 0}
+
+        chars_dict = {"1": 0,
+                      "2": 0,
+                      "3": 0,
+                      "4": 0,
+                      "5": 0,
+                      "6": 0,
+                      "7": 0,
+                      "8": 0,
+                      "9": 0,
+                      "10": 0,
+                      "11": 0,
+                      "12": 0,
+                      "0": 0}
 
         for fn in labels_dict.keys():
             labels = labels_dict[fn]
@@ -148,20 +170,31 @@ def count_colours(labels_json):
 
             colours_dict[colour] = colours_dict[colour] + 1
 
+            for c in chars:
+                chars_dict[c] = chars_dict[c] + 1
 
-        print(len(labels_dict))
+
+
+        p_dict = {k: v/length for k,v in colours_dict.items()}
+        p_dict_c = {k: v/length for k,v in chars_dict.items()}
+
         print(colours_dict)
+
+        print(chars_dict)
+
+        print(p_dict)
+        print(p_dict_c)
 
 
 if __name__ == "__main__":
-    labels_json = "data/dilbert/annotated-jsons/resized_char_and_colour_0:2000.json"
+    labels_json = "data/dilbert/annotated-jsons/resized_char_and_colour_0:3000_filtered.json"
 
-    labels_filtered = "data/dilbert/annotated-jsons/resized_char_and_colour_0:2000_9s.json"
+    labels_filtered = "data/dilbert/annotated-jsons/resized_char_and_colour_0:3000_equal.json"
 
-    out_json = "data/dilbert/dilbert_annotations_3.json"
+    out_json = "data/dilbert/annotated-jsons/dilbert_annotations_equal.json"
 
-    filter_on_conditions(labels_json, labels_filtered)
-    # convert_labels_to_annote(labels_filtered, out_json)
+    # filter_on_conditions(labels_json, labels_filtered)
+    convert_labels_to_annote(labels_filtered, out_json)
 
     count_colours(labels_filtered)
     # for c in permutations(l):
