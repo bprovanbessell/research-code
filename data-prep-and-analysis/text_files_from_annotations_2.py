@@ -1,7 +1,7 @@
 import json
-from shutil import copyfile
+from shutil import copyfile, copy
 import pickle
-
+import random
 import cv2
 import os
 
@@ -112,6 +112,33 @@ def make_pickles(out_folder, annotations_json, mirror=False):
     pickle.dump(classi_test, open(out_folder+"test/class_info.pickle", "wb"))
 
 
+def make_examples(annotations_json, out_folder):
+
+    # gen 2048
+    fn_object = open(out_folder + "example_filenames.txt", "w+")
+
+    file_paths = []
+
+    with open(annotations_json) as annotations_file:
+        annotations_dict = json.load(annotations_file)
+        print(annotations_dict)
+        for image_name in annotations_dict.keys():
+
+            txt_path = "text/001.dilbert_equal/" + image_name
+            dst = txt_path.replace(".png", "")
+            file_paths.append(dst)
+    print(file_paths)
+
+    random.shuffle(file_paths)
+    print(file_paths)
+
+    for fn in file_paths[0:400]:
+
+        fn_object.write(fn)
+        fn_object.write("\n")
+    fn_object.close()
+
+
 if __name__ == "__main__":
     # out_folder_t = "data/dilbert/dilbert-attn-3/text/001.dilbert_3/"
     # annotations_js = "data/dilbert/dilbert_annotations_3.json"
@@ -122,7 +149,7 @@ if __name__ == "__main__":
     #
     # images_folder = "data/dilbert/dilbert/cleared/"
 
-    out_folder_t = "../data/dilbert/dilbert_equal/text/001.dilbert_equals/"
+    out_folder_t = "../data/dilbert/dilbert_equal/text/001.dilbert_equal/"
     annotations_js = "../data/dilbert/annotated-jsons/dilbert_annotations_equal.json"
 
     out_folder_i = "../data/dilbert/dilbert_equal/images/001.dilbert_equal/"
@@ -133,4 +160,6 @@ if __name__ == "__main__":
 
     # mirror_images(out_folder_i, annotations_js, images_folder, True)
     # make_file_for_annotations(out_folder_t, annotations_js, mirror=False)
-    make_pickles(out_folder_p, annotations_js, mirror=False)
+    # make_pickles(out_folder_p, annotations_js, mirror=False)
+
+    make_examples(annotations_js, out_folder_p)

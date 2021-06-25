@@ -290,7 +290,7 @@ def _handle_path(path, sess, low_profile=False):
         f.close()
     else:
 
-        if "dilbert_transcribed" in path:
+        if "dilbert_transcribed" in path or "netG" in path:
             dt = True
         else:
             dt = False

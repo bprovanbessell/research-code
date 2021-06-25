@@ -265,4 +265,5 @@ if __name__ == "__main__":
     # copy_images_transcriptions(image_folder, train_paths_im, transcriptions_folder, train_paths_txt, out_folder_im, out_folder_txt)
 
     # transcriptions_folder = "data/dilbert/dilbert_transcribed/text/001.dilbert_transcribed/"
-    make_examples(gen_trans, transcriptions_folder, out_folder_gen_captions, out_folder_old)
+    # make_examples(gen_trans, transcriptions_folder, out_folder_gen_captions, out_folder_old)
+
