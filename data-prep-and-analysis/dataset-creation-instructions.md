@@ -13,18 +13,10 @@ Move attn model to /models
 Add example captions to example_captions.txt
 Find generated captions in models/
 
+e.g. - 
 cp netG_epoch_150.pth ../../../models/dilbert-3_attn.pth
 
-Download models
-gcloud compute scp --project gan-g-shit --zone us-west1-b --recurse deeplearning-2-vm:~/new-gan-stuff/AttnGAN/models/dilbert-2_attn.pth
-gcloud compute scp --project gan-g-shit --zone us-west1-b --recurse deeplearning-2-vm:~/new-gan-stuff/AttnGAN/DAMSMencoders/dilbert-2/text_encoder150.pth attnGAN_gen
+- Copy results from google cloud 
+gcloud compute scp --project gan --zone us-west1-b --recurse deeplearning-2-vm:~/new-gan-stuff/AttnGAN/models/dilbert attnGAN
 
-upload exampletxt 
-
-gcloud compute scp --project gan-g-shit --zone us-west1-b --recurse example_captions.txt deeplearning-2-vm:~/new-gan-stuff/AttnGAN/data/dilbert-3
-
-
-#copy results
-gcloud compute scp --project gan-g-shit --zone us-west1-b --recurse deeplearning-2-vm:~/new-gan-stuff/AttnGAN/models/dilbert-3 attnGAN_gen2.1
-
-gcloud compute scp --project gan-g-shit --zone us-west1-b --recurse deeplearning-2-vm:~/new-gan-stuff/AttnGAN/models/dilbert-3 attnGAN_gen2.1/
+gcloud compute scp --project gan --zone us-west1-b --recurse deeplearning-2-vm:~/new-gan-stuff/AttnGAN/models/dilbert attnGAN/
