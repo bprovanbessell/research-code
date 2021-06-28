@@ -22,3 +22,5 @@ cp netG_epoch_150.pth ../../../models/dilbert-3_attn.pth
 gcloud compute scp --project gan --zone us-west1-b --recurse deeplearning-2-vm:~/new-gan-stuff/AttnGAN/models/dilbert attnGAN
 
 gcloud compute scp --project gan --zone us-west1-b --recurse deeplearning-2-vm:~/new-gan-stuff/AttnGAN/models/dilbert attnGAN/
+
+* Use fid.py to calculate the frechet inception distance scores between generated and training image sets.
