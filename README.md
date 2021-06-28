@@ -9,7 +9,7 @@ available as an option to use instead of Inception V3. See ReadMe in the accordi
 * Data preparation scripts for formatting comic datasets to run with DescriptionGAN. 
 See dataset-creation-instructions.md for further details.
 * Python code used for multi-label classification of Dilbert comics. Please use the jupyter notebook for ease of use.
-* Versions of DCGAN, WGAN GP, and StabilityGAN used to generate comics (see DCGAN models).
+* Versions of DCGAN, WGAN GP, and StabilityGAN used to generate comics (see DCGAN models). Refer to https://github.com/LMescheder/GAN_stability for the StabilityGAN model.
 
 Please note: Image datasets have been omitted according to terms and conditions regarding re-distribution
 of Dilbert comcis (see https://dilbert.com/terms).

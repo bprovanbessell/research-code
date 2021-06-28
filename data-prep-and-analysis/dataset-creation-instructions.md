@@ -1,5 +1,6 @@
 ## Instructions for how to create a text annotated image dataset and run AttnGAN on it
 - Make descriptions for each image with manual_annotation.py
+- Or, to create descriptions from labels, use annotation_to_description.py (you can first label images with manual_annotation.py)
 - Create the text files for each image with text_files_from_annotation.py
 - Make the dataset pickle files
 - Make the yml files for pretraining DAMSM and for training the GAN
@@ -17,6 +18,7 @@ e.g. -
 cp netG_epoch_150.pth ../../../models/dilbert-3_attn.pth
 
 - Copy results from google cloud 
+
 gcloud compute scp --project gan --zone us-west1-b --recurse deeplearning-2-vm:~/new-gan-stuff/AttnGAN/models/dilbert attnGAN
 
 gcloud compute scp --project gan --zone us-west1-b --recurse deeplearning-2-vm:~/new-gan-stuff/AttnGAN/models/dilbert attnGAN/
