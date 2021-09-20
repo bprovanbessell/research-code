@@ -4,7 +4,7 @@ by Benjamin Provan-Bessell, under supervison of Lydia Chen and Zilong Zhao. See 
 for full details on motivation and results.
 
 This repository contains 4 main parts:
-* DescriptionGAN - A modified version of AttnGAN (https://github.com/taoxugit/AttnGAN) used to generate
+* ComicGAN - A modified version of AttnGAN (https://github.com/taoxugit/AttnGAN) used to generate
 comics from descriptions and dialogue. N.b. refer to https://github.com/bprovanbessell/AttnGAN for usage. The Comics CNN is also integrated as the image encoder, and is 
 available as an option to use instead of Inception V3. See ReadMe in the according repository for use instructions.
 * Data preparation scripts for formatting comic datasets to run with DescriptionGAN. 
